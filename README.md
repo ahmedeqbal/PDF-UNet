@@ -11,7 +11,7 @@ This repository contains the original implementation of "**[PDF-UNet: A semi-sup
 <img src="images/Fig.8.png">
 
 ## Visualization of segmentation results
-<img src="images/Fig. 13.png">
+<img src="images/Fig.13.png">
 
 ## Requirements
 
