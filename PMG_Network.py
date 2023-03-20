@@ -181,14 +181,14 @@ class ASPP_module(nn.Module):
                 m.bias.data.zero_()
 
 
-class DeepLabv3_plus(nn.Module):
+class PMG_Network(nn.Module):
     def __init__(self, nInputChannels=3, n_classes=1, os=16, pretrained=F, _print=True):
         if _print:
-            print("Constructing DeepLabv3+ model...")
+            print("Constructing PMG model...")
             print("Number of classes: {}".format(n_classes))
             print("Output stride: {}".format(os))
             print("Number of Input Channels: {}".format(nInputChannels))
-        super(DeepLabv3_plus, self).__init__()
+        super(PMG_Network, self).__init__()
 
         # Atrous Conv
         self.resnet_features = ResNet101(nInputChannels, os, pretrained=pretrained)
@@ -275,7 +275,7 @@ def get_1x_lr_params(model):
     """
     This generator returns all the parameters of the net except for
     the last classification layer. Note that for each batchnorm layer,
-    requires_grad is set to False in deeplab_resnet.py, therefore this function does not return
+    requires_grad is set to False in PMG_resnet.py, therefore this function does not return
     any batchnorm parameter
     """
     b = [model.resnet_features]
