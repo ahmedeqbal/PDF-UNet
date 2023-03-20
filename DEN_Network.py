@@ -184,17 +184,17 @@ if __name__ == "__main__":
     d_model.summary()
     g_model.summary()
 
-    DEN = DEN(d_model, g_model, latent_dim)
+    den = DEN(d_model, g_model, latent_dim)
 
     bce_loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True, label_smoothing=0.1)
     d_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
     g_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
-    DEN.compile(d_optimizer, g_optimizer, bce_loss_fn)
+    den.compile(d_optimizer, g_optimizer, bce_loss_fn)
 
     images_dataset = tf_dataset(images_path, batch_size)
 
     for epoch in range(num_epochs):
-        DEN.fit(images_dataset, epochs=1)
+        den.fit(images_dataset, epochs=1)
         g_model.save(f"saved_model/Experiments/g_model_{epoch}.h5")
         d_model.save(f"saved_model/Experiments/d_model_{epoch}.h5")
 
