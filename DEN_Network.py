@@ -109,15 +109,15 @@ def build_discriminator():
 
     return Model(image_input, x, name="discriminator")
 
-class GAN(Model):
+class DEN(Model):
     def __init__(self, discriminator, generator, latent_dim):
-        super(GAN, self).__init__()
+        super(DEN, self).__init__()
         self.discriminator = discriminator
         self.generator = generator
         self.latent_dim = latent_dim
 
     def compile(self, d_optimizer, g_optimizer, loss_fn):
-        super(GAN, self).compile()
+        super(DEN, self).compile()
         self.d_optimizer = d_optimizer
         self.g_optimizer = g_optimizer
         self.loss_fn = loss_fn
@@ -164,7 +164,7 @@ def save_plot(examples, epoch, n):
         pyplot.subplot(n, n, i+1)
         pyplot.axis("off")
         pyplot.imshow(np.squeeze(examples[i], axis=-1), cmap='gray')
-    filename = f"samples/Experiment_04/Epochs/generated_plot_epoch-{epoch+1}.png"
+    filename = f"samples/Experiment_01/Epochs/generated_plot_epoch-{epoch+1}.png"
     pyplot.savefig(filename)
     pyplot.close()
 
@@ -173,7 +173,7 @@ if __name__ == "__main__":
     batch_size = 16
     latent_dim = 128
     num_epochs = 300
-    images_path = glob("Datasets/GANS_BUS_Dataset/Aug_All/*")
+    images_path = glob("Datasets/DEN_BUS_Dataset/Aug_All/*")
 
     d_model = build_discriminator()
     g_model = build_generator(latent_dim)
@@ -184,17 +184,17 @@ if __name__ == "__main__":
     d_model.summary()
     g_model.summary()
 
-    gan = GAN(d_model, g_model, latent_dim)
+    DEN = DEN(d_model, g_model, latent_dim)
 
     bce_loss_fn = tf.keras.losses.BinaryCrossentropy(from_logits=True, label_smoothing=0.1)
     d_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
     g_optimizer = tf.keras.optimizers.Adam(learning_rate=0.0002, beta_1=0.5)
-    gan.compile(d_optimizer, g_optimizer, bce_loss_fn)
+    DEN.compile(d_optimizer, g_optimizer, bce_loss_fn)
 
     images_dataset = tf_dataset(images_path, batch_size)
 
     for epoch in range(num_epochs):
-        gan.fit(images_dataset, epochs=1)
+        DEN.fit(images_dataset, epochs=1)
         g_model.save(f"saved_model/Experiments/g_model_{epoch}.h5")
         d_model.save(f"saved_model/Experiments/d_model_{epoch}.h5")
 
